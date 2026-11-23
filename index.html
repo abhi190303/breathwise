@@ -54,7 +54,6 @@
       overflow-x: hidden;
     }
 
-    /* Custom Scrollbar in Beige & Blue */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -70,7 +69,6 @@
       background: #2563EB;
     }
 
-    /* Elevated Warm Ivory & Stone Card Depth */
     .glass-card {
       background: linear-gradient(160deg, rgba(252, 251, 247, 0.96), rgba(249, 246, 239, 0.98));
       backdrop-filter: blur(12px);
@@ -83,12 +81,10 @@
       box-shadow: 0 14px 32px -10px rgba(27, 54, 93, 0.12);
     }
 
-    /* Gauge Circle Transition */
     .gauge-ring {
       transition: stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.6s ease;
     }
 
-    /* Pulse indicator */
     @keyframes pulse-ring {
       0% { transform: scale(0.85); opacity: 0.9; }
       70% { transform: scale(1.6); opacity: 0; }
@@ -103,7 +99,6 @@
       animation: pulse-ring 2s infinite;
     }
 
-    /* Chat message animation */
     @keyframes fadeSlideUp {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -160,7 +155,6 @@
 
       <!-- Right Actions: Data Badge, Alerts, Architecture Docs -->
       <div class="flex items-center gap-2 order-2 md:order-3">
-        <!-- Data Source Integrity Badge -->
         <div id="dataSourceBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25 text-[#1B365D] text-xs font-semibold">
           <span class="relative flex h-2 w-2 text-[#2563EB] live-pulse">
             <span class="relative inline-flex rounded-full h-2 w-2 bg-[#2563EB]"></span>
@@ -168,13 +162,11 @@
           <span id="dataSourceText">LIVE API DATA</span>
         </div>
 
-        <!-- Alert Threshold Button -->
         <button id="openAlertModalBtn" class="relative p-2.5 rounded-xl bg-[#F9F6EF] hover:bg-[#EBF3FA] border border-[#DFD7C8] text-[#1B365D] transition" title="Smart Pollution Alert Settings">
           <i data-lucide="bell-ring" class="w-4 h-4 text-[#2563EB]"></i>
           <span id="alertActiveDot" class="hidden absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-600"></span>
         </button>
 
-        <!-- Architecture & Hack2Skill Docs Button -->
         <button id="openDocsBtn" class="px-3 py-2 rounded-xl bg-[#1B365D] hover:bg-[#10233E] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
           <i data-lucide="layers" class="w-4 h-4 text-[#93C5FD]"></i>
           <span class="hidden sm:inline">Architecture & Setup</span>
@@ -183,7 +175,7 @@
     </div>
   </header>
 
-  <!-- SMART POLLUTION ALERT BANNER (Dynamic) -->
+  <!-- SMART POLLUTION ALERT BANNER -->
   <div id="smartAlertBanner" class="hidden bg-gradient-to-r from-red-50 via-amber-50 to-red-50 border-b border-red-300 px-4 py-2.5">
     <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
       <div class="flex items-center gap-2.5 text-red-900">
@@ -254,9 +246,7 @@
 
       <!-- LEFT COLUMN (7 cols): LIVE AQI GAUGE, TELEMETRY & 6 POLLUTANTS -->
       <div class="xl:col-span-7 space-y-6">
-        <!-- Main AQI Hero Card -->
         <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden">
-          <!-- Subtle ambient glow based on AQI color -->
           <div id="aqiAmbientGlow" class="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none transition-colors duration-700"></div>
 
           <!-- Location Header & Metadata -->
@@ -285,7 +275,6 @@
 
           <!-- Center AQI Gauge + Health Implication + Weather -->
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-5">
-            <!-- Animated SVG Circular Gauge -->
             <div class="md:col-span-5 flex flex-col items-center justify-center relative">
               <div class="relative w-48 h-48 flex items-center justify-center">
                 <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 160 160">
@@ -374,6 +363,26 @@
           </div>
         </div>
       </div>
+
+      <!-- RIGHT COLUMN (5 cols): AI AIR QUALITY ASSISTANT CHATBOT -->
+      <div class="xl:col-span-5">
+        <div class="glass-card rounded-2xl flex flex-col h-[640px] overflow-hidden border-[#DFD7C8]">
+          <!-- Chatbot Header -->
+          <div class="p-4 bg-[#1B365D] border-b border-[#10233E] flex items-center justify-between text-white">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#93C5FD]">
+                <i data-lucide="bot" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                  AI Air Quality Assistant
+                  <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                </h3>
+                <p id="aiEngineModeBadge" class="text-[11px] text-[#DBEAFE]">Grounded Reasoning Engine</p>
+              </div>
+            </div>
+
+            <!-- Optional Free AI Key Toggle -->
             <button id="toggleFreeAiKeyBtn" title="Configure Free AI API Provider (Groq / Gemini)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-medium flex items-center gap-1.5 transition">
               <i data-lucide="key-round" class="w-3.5 h-3.5 text-[#93C5FD]"></i>
               <span>Free AI Key</span>
@@ -463,7 +472,6 @@
 
     <!-- ROW 2: PERSONALIZED HEALTH RECOMMENDATIONS & SMART DAILY ACTION PLAN -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <!-- Personalized Health & Activity Matrix (7 cols) -->
       <section class="lg:col-span-7 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#DFD7C8]">
@@ -479,13 +487,11 @@
             </span>
           </div>
 
-          <!-- 6 Guidance Cards -->
           <div id="healthGuidanceGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
             <!-- Populated dynamically via JS -->
           </div>
         </div>
 
-        <!-- Mandatory Medical Disclaimer -->
         <div class="mt-4 pt-3 border-t border-[#DFD7C8] flex items-start gap-2 text-[11px] text-[#4A5D75]">
           <i data-lucide="info" class="w-4 h-4 text-[#2563EB] shrink-0 mt-0.5"></i>
           <p>
@@ -494,7 +500,6 @@
         </div>
       </section>
 
-      <!-- Smart Daily Action Plan (5 cols) -->
       <section class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-6 flex flex-col">
         <div class="flex items-center justify-between pb-4 border-b border-[#DFD7C8]">
           <div>
@@ -531,7 +536,6 @@
           <p class="text-xs text-[#4A5D75] mt-1">Identify upcoming pollution peaks and optimal low-exposure outdoor windows.</p>
         </div>
 
-        <!-- Toggle 24H vs 7D -->
         <div class="flex items-center gap-1.5 bg-[#F5F1E8] p-1 rounded-xl border border-[#DFD7C8] self-start">
           <button id="btnForecast24h" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#1B365D] text-white shadow-sm transition">
             24-Hour Hourly
@@ -542,7 +546,6 @@
         </div>
       </div>
 
-      <!-- Forecast Insights Strip: Best Window vs Peak Pollution -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
         <div class="p-3.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25 flex items-center gap-3">
           <div class="p-2.5 rounded-xl bg-white text-[#2563EB] shadow-sm">
@@ -564,7 +567,6 @@
         </div>
       </div>
 
-      <!-- Responsive Chart Canvas Container -->
       <div class="relative w-full h-72 sm:h-80 mt-2">
         <canvas id="forecastChart"></canvas>
       </div>
@@ -572,8 +574,6 @@
 
     <!-- ROW 4: MULTI-CITY COMPARISON & POLLUTION SOURCE INSIGHTS -->
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-
-      <!-- City Comparison Module (7 cols) -->
       <section class="xl:col-span-7 glass-card rounded-2xl p-5 sm:p-6">
         <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#DFD7C8]">
           <div>
@@ -584,7 +584,6 @@
             <p class="text-xs text-[#4A5D75] mt-0.5">Compare active city against major regional & global hubs</p>
           </div>
 
-          <!-- Add City to Compare -->
           <div class="flex items-center gap-2">
             <select id="compareCitySelect" class="bg-[#F5F1E8] border border-[#DFD7C8] rounded-xl px-3 py-1.5 text-xs font-medium text-[#10233E] outline-none focus:border-[#2563EB]">
               <option value="New Delhi|28.6139|77.2090">New Delhi, India</option>
@@ -602,7 +601,6 @@
           </div>
         </div>
 
-        <!-- Comparison Table -->
         <div class="overflow-x-auto mt-4">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -623,7 +621,6 @@
         </div>
       </section>
 
-      <!-- Pollution Intelligence & Exposure Reduction (5 cols) -->
       <section class="xl:col-span-5 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="pb-4 border-b border-[#DFD7C8]">
@@ -771,14 +768,6 @@ npx serve . -p 3000</pre>
 
   <!-- APPLICATION LOGIC -->
   <script>
-    /**
-     * BreatheWise AI — Core Environmental Intelligence & State Engine
-     * Built for Hack2Skill Challenge 6 (Beige & Blue Refined Edition)
-     */
-
-    // =========================================================================
-    // 1. GLOBAL APPLICATION STATE & CONFIGURATION
-    // =========================================================================
     const FREE_AI_PROVIDERS = {
       groq: {
         name: 'GroqCloud Free',
@@ -814,18 +803,18 @@ npx serve . -p 3000</pre>
         lat: 12.9716,
         lon: 77.5946
       },
-      profile: 'general', // general | child | senior | respiratory | worker | fitness
-      dataMode: 'LIVE',   // LIVE | DEMO
-      liveData: null,     // { aqi, pm25, pm10, co, no2, so2, o3, temp, humidity, wind, timestamp }
-      forecast24h: [],    // Array of { time, aqi, pm25 }
-      forecast7d: [],     // Array of { date, maxAqi, avgAqi, maxPm25 }
+      profile: 'general',
+      dataMode: 'LIVE',
+      liveData: null,
+      forecast24h: [],
+      forecast7d: [],
       forecastMode: '24h',
       alertThreshold: 100,
       alertOnSpike: true,
       aiProvider: sessionStorage.getItem('bw_ai_provider') || 'groq',
       aiModel: sessionStorage.getItem('bw_ai_model') || 'llama-3.3-70b-versatile',
-      aiApiKey: sessionStorage.getItem('bw_ai_key') || '', // Stored strictly in sessionStorage
-      cache: new Map(),   // TTL Cache for API calls (10 mins)
+      aiApiKey: sessionStorage.getItem('bw_ai_key') || '',
+      cache: new Map(),
       comparisonCities: [
         { name: 'Bengaluru', country: 'India', lat: 12.9716, lon: 77.5946 },
         { name: 'New Delhi', country: 'India', lat: 28.6139, lon: 77.2090 },
@@ -834,7 +823,695 @@ npx serve . -p 3000</pre>
       ],
       chartInstance: null
     };
-// ... existing code ... -->
+
+    const USER_PROFILES = {
+      general: { label: 'General Adult', sensitivityOffset: 0 },
+      child: { label: 'Child', sensitivityOffset: 25 },
+      senior: { label: 'Senior Citizen', sensitivityOffset: 25 },
+      respiratory: { label: 'Person with Respiratory Sensitivity', sensitivityOffset: 40 },
+      worker: { label: 'Outdoor Worker', sensitivityOffset: 20 },
+      fitness: { label: 'Fitness Enthusiast', sensitivityOffset: 20 }
+    };
+
+    const WHO_GUIDELINES = {
+      pm25: { name: 'PM2.5', sub: 'Fine Particulate Matter', limit: 15, desc: 'Penetrates deep into alveoli & bloodstream' },
+      pm10: { name: 'PM10', sub: 'Coarse Inhalable Dust', limit: 45, desc: 'Road dust, construction & pollen aerosols' },
+      no2:  { name: 'NO₂', sub: 'Nitrogen Dioxide', limit: 25, desc: 'Vehicular combustion & urban traffic tracer' },
+      o3:   { name: 'O₃', sub: 'Ground-Level Ozone', limit: 100, desc: 'Photochemical smog formed in sunlight' },
+      so2:  { name: 'SO₂', sub: 'Sulfur Dioxide', limit: 40, desc: 'Industrial fuel & diesel sulfur emissions' },
+      co:   { name: 'CO', sub: 'Carbon Monoxide', limit: 4000, desc: 'Incomplete fuel combustion product' }
+    };
+
+    function getAqiCategory(aqi) {
+      if (aqi <= 50) {
+        return {
+          label: 'Good',
+          color: '#16A34A',
+          badgeClass: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+          glowClass: 'bg-emerald-500/10',
+          implication: 'Clean atmospheric conditions. Air quality poses minimal or no health risk for outdoor activities and natural home ventilation.'
+        };
+      } else if (aqi <= 100) {
+        return {
+          label: 'Moderate',
+          color: '#0284C7',
+          badgeClass: 'bg-[#EBF3FA] text-[#1B365D] border-[#2563EB]/30',
+          glowClass: 'bg-sky-500/10',
+          implication: 'Acceptable air quality for most adults. Unusually sensitive individuals or children exercising intensely should monitor comfort.'
+        };
+      } else if (aqi <= 150) {
+        return {
+          label: 'Poor',
+          color: '#D97706',
+          badgeClass: 'bg-amber-100 text-amber-900 border-amber-300',
+          glowClass: 'bg-amber-500/15',
+          implication: 'Elevated fine particulate and gaseous load. Sensitive groups may experience airway irritation; general public should reduce prolonged heavy exertion.'
+        };
+      } else if (aqi <= 200) {
+        return {
+          label: 'Very Poor',
+          color: '#DC2626',
+          badgeClass: 'bg-red-100 text-red-800 border-red-300',
+          glowClass: 'bg-red-500/15',
+          implication: 'Unhealthy air quality across all age groups. Everyone may begin to experience respiratory discomfort; move workouts indoors and wear an N95 mask outside.'
+        };
+      } else {
+        return {
+          label: 'Severe',
+          color: '#7E22CE',
+          badgeClass: 'bg-purple-100 text-purple-900 border-purple-300',
+          glowClass: 'bg-purple-500/15',
+          implication: 'Hazardous pollution episode. Avoid all non-essential outdoor exposure, seal windows, run HEPA air purification, and wear certified N95/FFP2 respirators outdoors.'
+        };
+      }
+    }
+
+    function getFallbackCityTelemetry(cityName) {
+      const presets = {
+        'Bengaluru': { aqi: 74, pm25: 22.8, pm10: 46.5, co: 410, no2: 24.2, so2: 6.4, o3: 54.0, temp: 24.6, humidity: 64, wind: 13.5 },
+        'New Delhi': { aqi: 186, pm25: 108.4, pm10: 194.0, co: 1180, no2: 58.6, so2: 18.2, o3: 68.0, temp: 29.2, humidity: 48, wind: 7.2 },
+        'Mumbai': { aqi: 96, pm25: 33.5, pm10: 78.0, co: 620, no2: 34.1, so2: 11.5, o3: 49.0, temp: 30.4, humidity: 74, wind: 16.8 },
+        'London': { aqi: 38, pm25: 9.2, pm10: 16.8, co: 230, no2: 18.4, so2: 3.1, o3: 44.0, temp: 14.2, humidity: 71, wind: 19.4 }
+      };
+      const base = presets[cityName] || { aqi: 68, pm25: 19.5, pm10: 39.0, co: 360, no2: 21.0, so2: 5.5, o3: 50.0, temp: 25.0, humidity: 60, wind: 12.0 };
+      const now = new Date();
+      const forecast24h = Array.from({ length: 24 }, (_, idx) => {
+        const d = new Date(now.getTime() + idx * 3600000);
+        const hr = d.getHours();
+        const rushFactor = (hr >= 8 && hr <= 11) || (hr >= 18 && hr <= 22) ? 1.24 : (hr >= 2 && hr <= 5 ? 0.76 : 0.95);
+        return {
+          time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          hour: hr,
+          aqi: Math.round(base.aqi * rushFactor),
+          pm25: +(base.pm25 * rushFactor).toFixed(1)
+        };
+      });
+      const forecast7d = Array.from({ length: 7 }, (_, idx) => {
+        const d = new Date(now.getTime() + idx * 86400000);
+        const mod = [1.0, 1.08, 0.92, 0.85, 0.96, 1.12, 1.03][idx];
+        return {
+          date: d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }),
+          maxAqi: Math.round(base.aqi * mod * 1.15),
+          avgAqi: Math.round(base.aqi * mod),
+          maxPm25: +(base.pm25 * mod * 1.15).toFixed(1)
+        };
+      });
+
+      return {
+        mode: 'DEMO',
+        liveData: { ...base, timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+        forecast24h,
+        forecast7d
+      };
+    }
+
+    async function fetchEnvironmentalData(city) {
+      const cacheKey = `${city.lat.toFixed(2)},${city.lon.toFixed(2)}`;
+      const cached = APP_STATE.cache.get(cacheKey);
+      if (cached && (Date.now() - cached.fetchedAt) < 10 * 60 * 1000) {
+        return cached.payload;
+      }
+
+      const aqUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${city.lat}&longitude=${city.lon}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&hourly=us_aqi,pm2_5&timezone=auto&forecast_days=7`;
+      const wxUrl = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=auto`;
+
+      try {
+        const [aqRes, wxRes] = await Promise.all([fetch(aqUrl), fetch(wxUrl)]);
+        if (!aqRes.ok || !wxRes.ok) throw new Error(`HTTP ${aqRes.status}/${wxRes.status}`);
+
+        const aqJson = await aqRes.json();
+        const wxJson = await wxRes.json();
+
+        const curAq = aqJson.current || {};
+        const curWx = wxJson.current || {};
+
+        if (typeof curAq.us_aqi !== 'number') {
+          throw new Error('Incomplete telemetry payload');
+        }
+
+        const now = new Date();
+        const hourlyTimes = aqJson.hourly?.time || [];
+        const hourlyAqi = aqJson.hourly?.us_aqi || [];
+        const hourlyPm25 = aqJson.hourly?.pm2_5 || [];
+
+        let startIdx = hourlyTimes.findIndex(t => new Date(t) >= now);
+        if (startIdx < 0) startIdx = 0;
+
+        const forecast24h = [];
+        for (let i = startIdx; i < Math.min(startIdx + 24, hourlyTimes.length); i++) {
+          const dt = new Date(hourlyTimes[i]);
+          forecast24h.push({
+            time: dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            hour: dt.getHours(),
+            aqi: Math.round(hourlyAqi[i] ?? curAq.us_aqi),
+            pm25: +(hourlyPm25[i] ?? curAq.pm2_5 ?? 0).toFixed(1)
+          });
+        }
+
+        const dayMap = new Map();
+        for (let i = 0; i < hourlyTimes.length; i++) {
+          const dt = new Date(hourlyTimes[i]);
+          const dayKey = dt.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+          const valAqi = hourlyAqi[i];
+          const valPm25 = hourlyPm25[i];
+          if (typeof valAqi !== 'number') continue;
+          if (!dayMap.has(dayKey)) {
+            dayMap.set(dayKey, { date: dayKey, aqis: [], pm25s: [] });
+          }
+          dayMap.get(dayKey).aqis.push(valAqi);
+          if (typeof valPm25 === 'number') dayMap.get(dayKey).pm25s.push(valPm25);
+        }
+
+        const forecast7d = Array.from(dayMap.values()).slice(0, 7).map(d => ({
+          date: d.date,
+          maxAqi: Math.round(Math.max(...d.aqis)),
+          avgAqi: Math.round(d.aqis.reduce((a, b) => a + b, 0) / d.aqis.length),
+          maxPm25: d.pm25s.length ? +Math.max(...d.pm25s).toFixed(1) : 0
+        }));
+
+        const payload = {
+          mode: 'LIVE',
+          liveData: {
+            aqi: Math.round(curAq.us_aqi),
+            pm25: +(curAq.pm2_5 ?? 0).toFixed(1),
+            pm10: +(curAq.pm10 ?? 0).toFixed(1),
+            co: Math.round(curAq.carbon_monoxide ?? 0),
+            no2: +(curAq.nitrogen_dioxide ?? 0).toFixed(1),
+            so2: +(curAq.sulphur_dioxide ?? 0).toFixed(1),
+            o3: +(curAq.ozone ?? 0).toFixed(1),
+            temp: +(curWx.temperature_2m ?? 25).toFixed(1),
+            humidity: Math.round(curWx.relative_humidity_2m ?? 55),
+            wind: +(curWx.wind_speed_10m ?? 10).toFixed(1),
+            timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          },
+          forecast24h,
+          forecast7d
+        };
+
+        APP_STATE.cache.set(cacheKey, { fetchedAt: Date.now(), payload });
+        return payload;
+      } catch (err) {
+        console.warn('Open-Meteo fetch failed, switching to calibrated demo dataset:', err);
+        return getFallbackCityTelemetry(city.name);
+      }
+    }
+
+    async function loadAndRenderCity(city) {
+      APP_STATE.currentCity = city;
+      document.getElementById('locationName').textContent = city.country ? `${city.name}, ${city.country}` : city.name;
+      document.getElementById('locationCoords').textContent = `${Math.abs(city.lat).toFixed(2)}°${city.lat >= 0 ? 'N' : 'S'}, ${Math.abs(city.lon).toFixed(2)}°${city.lon >= 0 ? 'E' : 'W'}`;
+
+      const result = await fetchEnvironmentalData(city);
+      APP_STATE.dataMode = result.mode;
+      APP_STATE.liveData = result.liveData;
+      APP_STATE.forecast24h = result.forecast24h;
+      APP_STATE.forecast7d = result.forecast7d;
+
+      updateDataSourceBadge();
+      renderLiveDashboard();
+      renderPersonalizedHealthProtocol();
+      renderSmartDailyActionPlan();
+      renderForecastSection();
+      renderPollutionInsights();
+      evaluateSmartAlerts();
+      ensureCityInComparison(city);
+      renderComparisonTable();
+    }
+
+    function updateDataSourceBadge() {
+      const badge = document.getElementById('dataSourceBadge');
+      const text = document.getElementById('dataSourceText');
+      if (APP_STATE.dataMode === 'LIVE') {
+        badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25 text-[#1B365D] text-xs font-semibold';
+        badge.innerHTML = `<span class="relative flex h-2 w-2 text-[#2563EB] live-pulse"><span class="relative inline-flex rounded-full h-2 w-2 bg-[#2563EB]"></span></span><span>LIVE API DATA</span>`;
+      } else {
+        badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-100 border border-amber-300 text-amber-900 text-xs font-semibold';
+        badge.innerHTML = `<span class="inline-flex rounded-full h-2 w-2 bg-amber-600"></span><span id="dataSourceText">DEMO SAMPLE DATA</span>`;
+      }
+    }
+
+    function renderLiveDashboard() {
+      const d = APP_STATE.liveData;
+      const cat = getAqiCategory(d.aqi);
+
+      document.getElementById('lastUpdatedTime').textContent = d.timestamp;
+      document.getElementById('aqiValueDisplay').textContent = d.aqi;
+
+      const badge = document.getElementById('aqiCategoryBadge');
+      badge.textContent = cat.label;
+      badge.className = `px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide border ${cat.badgeClass}`;
+
+      const gauge = document.getElementById('aqiGaugeCircle');
+      const circumference = 427.25;
+      const pct = Math.min(d.aqi / 300, 1);
+      gauge.style.strokeDashoffset = circumference - pct * circumference;
+      gauge.style.stroke = cat.color;
+
+      document.getElementById('aqiAmbientGlow').className = `absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl pointer-events-none transition-colors duration-700 ${cat.glowClass}`;
+
+      const ratios = [
+        { key: 'PM2.5', ratio: d.pm25 / WHO_GUIDELINES.pm25.limit },
+        { key: 'PM10', ratio: d.pm10 / WHO_GUIDELINES.pm10.limit },
+        { key: 'NO₂', ratio: d.no2 / WHO_GUIDELINES.no2.limit },
+        { key: 'O₃', ratio: d.o3 / WHO_GUIDELINES.o3.limit },
+        { key: 'SO₂', ratio: d.so2 / WHO_GUIDELINES.so2.limit },
+        { key: 'CO', ratio: d.co / WHO_GUIDELINES.co.limit }
+      ].sort((a, b) => b.ratio - a.ratio);
+
+      document.getElementById('dominantPollutantTag').textContent = `Primary: ${ratios[0].key}`;
+      document.getElementById('healthImplicationText').textContent = cat.implication;
+
+      document.getElementById('weatherTemp').textContent = `${d.temp}°C`;
+      document.getElementById('weatherHumidity').textContent = `${d.humidity}%`;
+      document.getElementById('weatherWind').textContent = `${d.wind} km/h`;
+
+      const pollutantKeys = ['pm25', 'pm10', 'no2', 'o3', 'so2', 'co'];
+      const grid = document.getElementById('pollutantsGrid');
+      grid.innerHTML = pollutantKeys.map(k => {
+        const meta = WHO_GUIDELINES[k];
+        const val = d[k];
+        const whoPct = Math.min(Math.round((val / meta.limit) * 100), 100);
+        const barColor = val <= meta.limit ? 'bg-[#0284C7]' : (val <= meta.limit * 2 ? 'bg-amber-500' : 'bg-red-600');
+        return `
+          <div class="p-3 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] hover:border-[#2563EB]/35 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-[#10233E]">${meta.name}</span>
+              <span class="text-xs font-mono font-bold text-[#1B365D]">${val} <span class="text-[10px] font-normal text-[#4A5D75]">µg/m³</span></span>
+            </div>
+            <p class="text-[10px] text-[#4A5D75] truncate mt-0.5">${meta.sub}</p>
+            <div class="w-full h-1.5 bg-[#DFD7C8] rounded-full overflow-hidden mt-2">
+              <div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${Math.max(whoPct, 8)}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderPersonalizedHealthProtocol() {
+      const d = APP_STATE.liveData;
+      const prof = USER_PROFILES[APP_STATE.profile];
+      const effectiveAqi = d.aqi + prof.sensitivityOffset;
+
+      document.getElementById('activeProfileLabel').textContent = prof.label;
+
+      let riskLabel = 'Low Exposure Risk';
+      let riskBadgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+      if (effectiveAqi > 175) {
+        riskLabel = 'High Exposure Risk';
+        riskBadgeClass = 'bg-red-100 text-red-800 border-red-300';
+      } else if (effectiveAqi > 110) {
+        riskLabel = 'Elevated Exposure Risk';
+        riskBadgeClass = 'bg-amber-100 text-amber-900 border-amber-300';
+      } else if (effectiveAqi > 65) {
+        riskLabel = 'Moderate Sensitivity Risk';
+        riskBadgeClass = 'bg-[#EBF3FA] text-[#1B365D] border-[#2563EB]/30';
+      }
+
+      const riskBadge = document.getElementById('profileRiskBadge');
+      riskBadge.textContent = riskLabel;
+      riskBadge.className = `px-3 py-1 rounded-full text-xs font-semibold border ${riskBadgeClass}`;
+
+      const cards = [
+        {
+          icon: 'trees',
+          title: 'Outdoor Activities',
+          body: effectiveAqi <= 85
+            ? `Safe for normal outdoor walks, errands, and recreation for ${prof.label.toLowerCase()}s.`
+            : effectiveAqi <= 140
+            ? `Limit continuous outdoor stays to 30–45 minutes; avoid high-traffic arterial roads.`
+            : `Defer non-essential outdoor outings until AQI drops below ${Math.max(80, 120 - prof.sensitivityOffset)}.`
+        },
+        {
+          icon: 'home',
+          title: 'Indoor Activities',
+          body: effectiveAqi <= 100
+            ? `All normal indoor routines are safe without extra air filtration.`
+            : `Shift cardio, yoga, and children's play indoors; use a HEPA purifier if available.`
+        },
+        {
+          icon: 'gauge',
+          title: 'Exercise Intensity',
+          body: effectiveAqi <= 75
+            ? `Full aerobic & endurance training permitted at normal breathing rates.`
+            : effectiveAqi <= 130
+            ? `Reduce vigorous running/HIIT to light-to-moderate walking or indoor gym sessions.`
+            : `Avoid heavy outdoor cardio—elevated breathing multiplies fine particle inhalation by 3–5×.`
+        },
+        {
+          icon: 'shield',
+          title: 'Mask Precautions',
+          body: effectiveAqi <= 95
+            ? `No mask required for routine outdoor movement unless near dusty construction.`
+            : effectiveAqi <= 150
+            ? `Wear a snug-fitting N95 / KN95 / FFP2 mask during commutes or prolonged outdoor exposure.`
+            : `Mandatory certified N95 / FFP2 respirator outdoors (cloth/surgical masks do not filter PM2.5).`
+        },
+        {
+          icon: 'door-open',
+          title: 'Ventilation Strategy',
+          body: d.aqi <= 85
+            ? `Open windows for cross-ventilation, especially when wind speed (${d.wind} km/h) aids circulation.`
+            : `Keep exterior windows closed during peak traffic; ventilate briefly during the afternoon clean-air dip.`
+        },
+        {
+          icon: 'sparkles',
+          title: 'Exposure Reduction',
+          body: APP_STATE.profile === 'respiratory'
+            ? `Keep rescue medication accessible, stay hydrated, and rinse nasal passages after outdoor travel.`
+            : APP_STATE.profile === 'worker'
+            ? `Take 10-minute shaded breaks every hour away from idling vehicles and wear an N95 respirator.`
+            : `Use green side-streets instead of main roads and wash face/hands after returning indoors.`
+        }
+      ];
+
+      document.getElementById('healthGuidanceGrid').innerHTML = cards.map(c => `
+        <div class="p-3.5 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] hover:border-[#2563EB]/30 transition">
+          <div class="flex items-center gap-2 mb-1.5">
+            <div class="p-1.5 rounded-lg bg-[#EBF3FA] text-[#2563EB]">
+              <i data-lucide="${c.icon}" class="w-3.5 h-3.5"></i>
+            </div>
+            <h4 class="text-xs font-bold text-[#10233E]">${c.title}</h4>
+          </div>
+          <p class="text-xs text-[#4A5D75] leading-relaxed">${c.body}</p>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function renderSmartDailyActionPlan() {
+      const f24 = APP_STATE.forecast24h;
+      const prof = USER_PROFILES[APP_STATE.profile];
+      const offset = prof.sensitivityOffset;
+
+      const avgSlot = (hours) => {
+        const matches = f24.filter(item => hours.includes(item.hour));
+        if (!matches.length) return APP_STATE.liveData.aqi;
+        return Math.round(matches.reduce((s, m) => s + m.aqi, 0) / matches.length);
+      };
+
+      const morningAqi = avgSlot([6, 7, 8, 9, 10]);
+      const afternoonAqi = avgSlot([12, 13, 14, 15, 16]);
+      const eveningAqi = avgSlot([18, 19, 20, 21]);
+
+      const slots = [
+        {
+          period: 'Morning (06:00 – 10:00)',
+          icon: 'sunrise',
+          aqi: morningAqi,
+          advice: (morningAqi + offset) <= 95
+            ? `Favorable morning air (est. AQI ${morningAqi}). Good window for outdoor walking or light jogging before commuter traffic peaks.`
+            : `Elevated morning inversion/traffic haze (est. AQI ${morningAqi}). Indoor exercise recommended for ${prof.label.toLowerCase()}s.`
+        },
+        {
+          period: 'Afternoon (12:00 – 16:00)',
+          icon: 'sun',
+          aqi: afternoonAqi,
+          advice: (afternoonAqi + offset) <= 105
+            ? `Thermal mixing improves dispersion (est. AQI ${afternoonAqi}). Ideal midday window to air out rooms and run outdoor errands.`
+            : `Avoid prolonged outdoor exposure if pollution or ozone remains elevated (est. AQI ${afternoonAqi}); hydrate well.`
+        },
+        {
+          period: 'Evening (18:00 – 21:00)',
+          icon: 'moon',
+          aqi: eveningAqi,
+          advice: (eveningAqi + offset) <= 95
+            ? `Moderate evening conditions (est. AQI ${eveningAqi}). Check live AQI before going for an evening walk.`
+            : `Evening rush-hour accumulation expected (est. AQI ${eveningAqi}). Keep windows closed and wear an N95 mask if commuting.`
+        }
+      ];
+
+      document.getElementById('dailyActionPlanContainer').innerHTML = slots.map(s => {
+        const cat = getAqiCategory(s.aqi);
+        return `
+          <div class="p-3.5 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-[#10233E] flex items-center gap-1.5">
+                <i data-lucide="${s.icon}" class="w-4 h-4 text-[#2563EB]"></i>
+                ${s.period}
+              </span>
+              <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded border ${cat.badgeClass}">Est. AQI ${s.aqi}</span>
+            </div>
+            <p class="text-xs text-[#4A5D75] leading-relaxed">${s.advice}</p>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderForecastSection() {
+      const f24 = APP_STATE.forecast24h;
+      if (f24.length) {
+        const sorted = [...f24].sort((a, b) => a.aqi - b.aqi);
+        const best = sorted[0];
+        const peak = sorted[sorted.length - 1];
+        document.getElementById('bestWindowText').textContent = `Around ${best.time} (Forecast AQI ~${best.aqi}, PM2.5 ~${best.pm25} µg/m³) — best for outdoor movement.`;
+        document.getElementById('peakWindowText').textContent = `Around ${peak.time} (Forecast AQI ~${peak.aqi}, PM2.5 ~${peak.pm25} µg/m³) — minimize heavy exertion.`;
+      }
+
+      const ctx = document.getElementById('forecastChart').getContext('2d');
+      if (APP_STATE.chartInstance) {
+        APP_STATE.chartInstance.destroy();
+      }
+
+      const is24h = APP_STATE.forecastMode === '24h';
+      const labels = is24h ? f24.map(d => d.time) : APP_STATE.forecast7d.map(d => d.date);
+      const aqiValues = is24h ? f24.map(d => d.aqi) : APP_STATE.forecast7d.map(d => d.avgAqi);
+      const pmValues = is24h ? f24.map(d => d.pm25) : APP_STATE.forecast7d.map(d => d.maxPm25);
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+      gradient.addColorStop(0, 'rgba(37, 99, 235, 0.25)');
+      gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+
+      APP_STATE.chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: is24h ? 'Forecast US AQI (Hourly)' : 'Daily Mean US AQI (Forecast)',
+              data: aqiValues,
+              borderColor: '#1B365D',
+              backgroundColor: gradient,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#2563EB',
+              pointRadius: 3,
+              fill: true,
+              tension: 0.35
+            },
+            {
+              label: is24h ? 'Forecast PM2.5 (µg/m³)' : 'Daily Peak PM2.5 (µg/m³)',
+              data: pmValues,
+              borderColor: '#0284C7',
+              borderDash: [5, 4],
+              borderWidth: 2,
+              pointRadius: 2.5,
+              fill: false,
+              tension: 0.35
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: { color: '#10233E', font: { family: 'Inter', size: 11, weight: '600' } }
+            },
+            tooltip: {
+              backgroundColor: '#10233E',
+              titleColor: '#FCFBF7',
+              bodyColor: '#DBEAFE',
+              padding: 10,
+              cornerRadius: 10
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(223, 215, 200, 0.65)' },
+              ticks: { color: '#4A5D75', font: { size: 10 } }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: 'rgba(223, 215, 200, 0.65)' },
+              ticks: { color: '#4A5D75', font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    function ensureCityInComparison(city) {
+      if (!APP_STATE.comparisonCities.some(c => c.name.toLowerCase() === city.name.toLowerCase())) {
+        APP_STATE.comparisonCities.unshift(city);
+        if (APP_STATE.comparisonCities.length > 6) APP_STATE.comparisonCities.pop();
+      }
+    }
+
+    async function renderComparisonTable() {
+      const tbody = document.getElementById('comparisonTableBody');
+      const rows = await Promise.all(
+        APP_STATE.comparisonCities.map(async c => {
+          const res = await fetchEnvironmentalData(c);
+          return { city: c, data: res.liveData };
+        })
+      );
+
+      tbody.innerHTML = rows.map(({ city, data }) => {
+        const cat = getAqiCategory(data.aqi);
+        const isCurrent = city.name.toLowerCase() === APP_STATE.currentCity.name.toLowerCase();
+        const shortAdvice = data.aqi <= 50 ? 'Safe outdoors' : data.aqi <= 100 ? 'Sensitive caution' : data.aqi <= 150 ? 'Limit exertion' : 'N95 & indoor';
+        return `
+          <tr class="${isCurrent ? 'bg-[#EBF3FA]/65 font-medium' : 'hover:bg-[#F5F1E8]/60'} transition">
+            <td class="py-2.5 px-3 text-[#10233E] font-semibold">
+              ${city.name}
+              ${isCurrent ? '<span class="ml-1.5 text-[10px] px-1.5 py-0.5 rounded bg-[#1B365D] text-white">Active</span>' : ''}
+            </td>
+            <td class="py-2.5 px-3 font-mono font-bold text-[#10233E]">${data.aqi}</td>
+            <td class="py-2.5 px-3 font-mono text-[#4A5D75]">${data.pm25} µg/m³</td>
+            <td class="py-2.5 px-3 font-mono text-[#4A5D75]">${data.pm10} µg/m³</td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${cat.badgeClass}">${cat.label}</span></td>
+            <td class="py-2.5 px-3 text-xs text-[#4A5D75]">${shortAdvice}</td>
+            <td class="py-2.5 px-2 text-right">
+              <button onclick="selectPresetCity('${city.name.replace(/'/g, "\\'")}', ${city.lat}, ${city.lon}, '${(city.country || '').replace(/'/g, "\\'")}')" class="text-xs font-semibold text-[#2563EB] hover:underline">
+                Inspect
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderPollutionInsights() {
+      const d = APP_STATE.liveData;
+      const pmRatio = d.pm10 > 0 ? (d.pm25 / d.pm10) : 0.5;
+      const sourceSignature = pmRatio > 0.55
+        ? 'High fine-to-coarse ratio (PM2.5/PM10 > 0.55) points toward combustion aerosols such as vehicular exhaust, diesel generators, or regional smoke.'
+        : 'Elevated coarse particulate share (PM10) suggests wind-blown road dust, construction activity, or dry soil resuspension.';
+
+      const dispersionNote = d.wind >= 14
+        ? `Brisk surface winds (${d.wind} km/h) are actively ventilating the urban boundary layer and preventing stagnation.`
+        : `Low wind dispersion (${d.wind} km/h) allows local traffic and urban emissions to accumulate near ground level.`;
+
+      document.getElementById('pollutionInsightsContent').innerHTML = `
+        <div class="p-3.5 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8]">
+          <p class="text-xs font-bold text-[#1B365D] uppercase tracking-wider mb-1">Chemical Signature & Likely Contributors</p>
+          <p class="text-xs text-[#10233E] leading-relaxed">${sourceSignature}</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8]">
+          <p class="text-xs font-bold text-[#1B365D] uppercase tracking-wider mb-1">Meteorological Dispersion Factor</p>
+          <p class="text-xs text-[#10233E] leading-relaxed">${dispersionNote}</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25">
+          <p class="text-xs font-bold text-[#1B365D] uppercase tracking-wider mb-1">Actionable Exposure Mitigation</p>
+          <p class="text-xs text-[#10233E] leading-relaxed">
+            Walking 50–100 meters away from congested intersections reduces personal NO₂ and ultrafine PM2.5 inhalation by up to 40%.
+          </p>
+        </div>
+      `;
+    }
+
+    function evaluateSmartAlerts() {
+      if (!APP_STATE.liveData) return;
+      const liveAqi = APP_STATE.liveData.aqi;
+      const banner = document.getElementById('smartAlertBanner');
+      const dot = document.getElementById('alertActiveDot');
+      const msg = document.getElementById('smartAlertMessage');
+
+      const maxForecast = APP_STATE.forecast24h.length
+        ? Math.max(...APP_STATE.forecast24h.map(f => f.aqi))
+        : liveAqi;
+      const spike = maxForecast - liveAqi;
+
+      if (liveAqi >= APP_STATE.alertThreshold) {
+        banner.classList.remove('hidden');
+        dot.classList.remove('hidden');
+        msg.textContent = `Alert for ${APP_STATE.currentCity.name}: Live US AQI (${liveAqi}) exceeds your threshold of ${APP_STATE.alertThreshold}. Wear an N95 mask outdoors and limit heavy exertion.`;
+      } else if (APP_STATE.alertOnSpike && spike >= 40) {
+        banner.classList.remove('hidden');
+        dot.classList.remove('hidden');
+        msg.textContent = `Forecast Deterioration Warning: ${APP_STATE.currentCity.name} AQI is projected to spike by +${spike} points (up to ${maxForecast}) in the next 24 hours.`;
+      } else {
+        banner.classList.add('hidden');
+        dot.classList.add('hidden');
+      }
+    }
+
+    function appendChatMessage(sender, htmlContent, metaBadge = null) {
+      const container = document.getElementById('chatMessages');
+      const wrapper = document.createElement('div');
+      wrapper.className = `chat-msg flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+      if (sender === 'user') {
+        wrapper.innerHTML = `
+          <div class="max-w-[85%] rounded-2xl rounded-tr-sm px-4 py-2.5 bg-[#1B365D] text-white text-xs sm:text-sm shadow-sm">
+            ${htmlContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+          </div>
+        `;
+      } else {
+        wrapper.innerHTML = `
+          <div class="max-w-[92%] rounded-2xl rounded-tl-sm px-4 py-3 bg-[#FCFBF7] border border-[#DFD7C8] text-[#10233E] text-xs sm:text-sm space-y-1.5 shadow-sm">
+            ${metaBadge ? `<div class="text-[10px] font-mono font-semibold text-[#2563EB] uppercase tracking-wider">${metaBadge}</div>` : ''}
+            <div class="space-y-1.5 leading-relaxed">${htmlContent}</div>
+          </div>
+        `;
+      }
+      container.appendChild(wrapper);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function generateGroundedRuleResponse(question) {
+      const q = question.toLowerCase();
+      const d = APP_STATE.liveData;
+      const cat = getAqiCategory(d.aqi);
+      const prof = USER_PROFILES[APP_STATE.profile];
+      const effAqi = d.aqi + prof.sensitivityOffset;
+      const sourceLabel = APP_STATE.dataMode === 'LIVE' ? 'live Open-Meteo telemetry' : 'calibrated demo telemetry';
+
+      const f24 = APP_STATE.forecast24h;
+      const bestSlot = f24.length ? [...f24].sort((a, b) => a.aqi - b.aqi)[0] : null;
+
+      let answer = '';
+      if (q.includes('run') || q.includes('exercise') || q.includes('workout') || q.includes('jog')) {
+        if (q.includes('time') || q.includes('when') || q.includes('best')) {
+          answer = bestSlot
+            ? `<p>Based on the <strong>24-hour forecast model</strong> for ${APP_STATE.currentCity.name}, the cleanest window for outdoor exercise is around <strong>${bestSlot.time}</strong> (projected AQI <strong>${bestSlot.aqi}</strong>, PM2.5 <strong>${bestSlot.pm25} µg/m³</strong>).</p>`
+            : `<p>Early morning or mid-afternoon typically offers lower particulate accumulation than rush hours.</p>`;
+        } else {
+          answer = effAqi <= 95
+            ? `<p><strong>Yes, outdoor running is generally safe right now</strong> in ${APP_STATE.currentCity.name} (${sourceLabel}: US AQI <strong>${d.aqi} — ${cat.label}</strong>, PM2.5 <strong>${d.pm25} µg/m³</strong>).</p>
+               <p>For your profile (<strong>${prof.label}</strong>), normal aerobic exertion is appropriate. Choose parks or tree-lined streets away from traffic.</p>`
+            : `<p><strong>Outdoor running is not recommended right now</strong> for a <strong>${prof.label}</strong> in ${APP_STATE.currentCity.name} (${sourceLabel}: US AQI <strong>${d.aqi} — ${cat.label}</strong>, PM2.5 <strong>${d.pm25} µg/m³</strong>).</p>
+               <p>Heavy cardio increases minute ventilation 3–5×, drawing fine particles deeper into the lungs. Opt for an indoor workout today.</p>`;
+        }
+      } else if (q.includes('mask')) {
+        answer = effAqi > 95
+          ? `<p><strong>Yes, wearing a certified N95, KN95, or FFP2 mask is recommended</strong> outdoors in ${APP_STATE.currentCity.name} (US AQI <strong>${d.aqi}</strong>, PM2.5 <strong>${d.pm25} µg/m³</strong>).</p>
+             <p>Standard cloth or loose surgical masks do not effectively filter PM2.5 aerosols.</p>`
+          : `<p><strong>A mask is not strictly necessary</strong> for routine outdoor activity in ${APP_STATE.currentCity.name} right now (US AQI <strong>${d.aqi} — ${cat.label}</strong>), unless you are near active road dust or have heightened respiratory sensitivity.</p>`;
+      } else if (q.includes('child') || q.includes('kid') || q.includes('play')) {
+        const childEff = d.aqi + 25;
+        answer = childEff <= 90
+          ? `<p><strong>Yes, children can play outdoors</strong> in ${APP_STATE.currentCity.name} (US AQI <strong>${d.aqi}</strong>, PM2.5 <strong>${d.pm25} µg/m³</strong>). Keep hydration handy and favor grassy play areas over roadside parks.</p>`
+          : `<p><strong>Limit prolonged outdoor play for children</strong> today in ${APP_STATE.currentCity.name} (US AQI <strong>${d.aqi} — ${cat.label}</strong>). Children breathe faster per kilogram of body weight; keep outdoor sessions short or move play indoors.</p>`;
+      } else if (q.includes('window') || q.includes('ventilat')) {
+        answer = d.aqi <= 85
+          ? `<p><strong>Yes, it is safe to open your windows</strong> in ${APP_STATE.currentCity.name} (US AQI <strong>${d.aqi}</strong>, wind speed <strong>${d.wind} km/h</strong>) to refresh indoor air.</p>`
+          : `<p><strong>Keep exterior windows closed</strong> right now in ${APP_STATE.currentCity.name} because outdoor AQI is elevated at <strong>${d.aqi} (${cat.label})</strong>. Wait until the afternoon dispersion window before airing out rooms.</p>`;
+      } else if (q.includes('why') || q.includes('cause') || q.includes('source')) {
+        answer = `<p>In ${APP_STATE.currentCity.name}, ${sourceLabel} records US AQI <strong>${d.aqi}</strong> with PM2.5 at <strong>${d.pm25} µg/m³</strong>, PM10 at <strong>${d.pm10} µg/m³</strong>, and NO₂ at <strong>${d.no2} µg/m³</strong>.</p>
+                  <p>Without direct smokestack sensors we cannot pinpoint a single emitter, but these chemical ratios alongside <strong>${d.wind} km/h</strong> wind speed reflect typical urban traffic combustion and resuspended surface dust.</p>`;
+      } else {
+        answer = `<p>Current ${sourceLabel} for <strong>${APP_STATE.currentCity.name}</strong> shows US AQI <strong>${d.aqi} (${cat.label})</strong>, PM2.5 <strong>${d.pm25} µg/m³</strong>, temperature <strong>${d.temp}°C</strong>, and wind <strong>${d.wind} km/h</strong>.</p>
+                  <ul>
+                    <li><strong>Profile (${prof.label}):</strong> ${effAqi <= 95 ? 'Normal outdoor activity is safe.' : 'Reduce prolonged outdoor exertion and consider an N95 mask in traffic.'}</li>
+                    ${bestSlot ? `<li><strong>Forecast Best Window:</strong> Around <strong>${bestSlot.time}</strong> (est. AQI ${bestSlot.aqi}).</li>` : ''}
+                  </ul>`;
+      }
+
+      return `${answer}<p class="text-[11px] text-[#4A5D75] mt-1"><em>Disclaimer: Environmental guidance based on ${sourceLabel}; not a medical diagnosis.</em></p>`;
+    }
+
     async function handleAssistantQuery(userQuestion) {
       if (!userQuestion.trim()) return;
       appendChatMessage('user', userQuestion);
@@ -842,7 +1519,6 @@ npx serve . -p 3000</pre>
       const live = APP_STATE.liveData;
       const systemPrompt = `You are BreatheWise AI, an urban environmental health assistant. Answer concisely in clean HTML (<p>, <ul>, <li>, <strong>). Ground every statement strictly in this telemetry for ${APP_STATE.currentCity.name}: DataMode=${APP_STATE.dataMode}, US_AQI=${live.aqi}, PM2.5=${live.pm25}ug/m3, PM10=${live.pm10}ug/m3, NO2=${live.no2}ug/m3, O3=${live.o3}ug/m3, SO2=${live.so2}ug/m3, CO=${live.co}ug/m3, Temp=${live.temp}C, Humidity=${live.humidity}%, Wind=${live.wind}km/h, UserProfile=${USER_PROFILES[APP_STATE.profile].label}. Never fabricate readings, distinguish forecast from live data, and include a brief non-medical disclaimer.`;
 
-      // 1. GroqCloud Free Tier (OpenAI-compatible LPU endpoint)
       if (APP_STATE.aiProvider === 'groq' && APP_STATE.aiApiKey) {
         try {
           const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -881,7 +1557,6 @@ npx serve . -p 3000</pre>
         }
       }
 
-      // 2. Google AI Studio / Gemini Free Tier
       if (APP_STATE.aiProvider === 'gemini' && APP_STATE.aiApiKey) {
         try {
           const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(APP_STATE.aiModel)}:generateContent?key=${encodeURIComponent(APP_STATE.aiApiKey)}`;
@@ -914,13 +1589,147 @@ npx serve . -p 3000</pre>
         }
       }
 
-      // 3. Built-in Deterministic Grounded Reasoning Engine (Always Available)
       setTimeout(() => {
         const responseHtml = generateGroundedRuleResponse(userQuestion);
         appendChatMessage('ai', responseHtml);
       }, 240);
     }
-// ... existing code ... -->
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = 'pointer-events-auto px-4 py-2.5 rounded-xl bg-[#10233E] text-white text-xs font-medium shadow-lg border border-[#2563EB]/30 chat-msg';
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    function selectPresetCity(name, lat, lon, country) {
+      loadAndRenderCity({ name, lat, lon, country });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      // Profile Selector Buttons
+      document.querySelectorAll('.profile-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.profile-btn').forEach(b => {
+            b.className = 'profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35';
+          });
+          btn.className = 'profile-btn active px-3 py-2 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 bg-[#1B365D] border-[#1B365D] text-white shadow-sm';
+          APP_STATE.profile = btn.dataset.profile;
+          renderPersonalizedHealthProtocol();
+          renderSmartDailyActionPlan();
+          showToast(`Profile updated: ${USER_PROFILES[APP_STATE.profile].label}`);
+        });
+      });
+
+      // City Search via Open-Meteo Geocoding API
+      const searchInput = document.getElementById('citySearchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      let searchTimer = null;
+
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimer);
+        const query = e.target.value.trim();
+        if (query.length < 2) {
+          dropdown.classList.add('hidden');
+          return;
+        }
+        searchTimer = setTimeout(async () => {
+          try {
+            const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=6&language=en&format=json`);
+            const data = await res.json();
+            const results = data.results || [];
+            if (!results.length) {
+              dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-[#4A5D75]">No cities found matching "${query}".</div>`;
+            } else {
+              dropdown.innerHTML = results.map(r => `
+                <button type="button" class="w-full text-left px-4 py-2.5 hover:bg-[#EBF3FA] flex items-center justify-between text-xs border-b border-[#DFD7C8]/50 last:border-none transition"
+                  onclick="selectPresetCity('${r.name.replace(/'/g, "\\'")}', ${r.latitude}, ${r.longitude}, '${(r.country || '').replace(/'/g, "\\'")}'); document.getElementById('searchDropdown').classList.add('hidden'); document.getElementById('citySearchInput').value='';">
+                  <span class="font-semibold text-[#10233E]">${r.name}${r.admin1 ? `, ${r.admin1}` : ''}</span>
+                  <span class="text-[#4A5D75]">${r.country || ''}</span>
+                </button>
+              `).join('');
+            }
+            dropdown.classList.remove('hidden');
+          } catch (err) {
+            console.warn('Geocoding search error:', err);
+          }
+        }, 300);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.add('hidden');
+        }
+      });
+
+      // GPS Location Selection
+      document.getElementById('gpsBtn').addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          showToast('Geolocation is not supported by this browser.');
+          return;
+        }
+        showToast('Requesting GPS location...');
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            loadAndRenderCity({
+              name: 'My GPS Location',
+              country: '',
+              lat: pos.coords.latitude,
+              lon: pos.coords.longitude
+            });
+            showToast('Updated dashboard to your live GPS coordinates.');
+          },
+          () => {
+            showToast('GPS permission denied; keeping current city.');
+          }
+        );
+      });
+
+      // Forecast Toggle Buttons
+      const btn24h = document.getElementById('btnForecast24h');
+      const btn7d = document.getElementById('btnForecast7d');
+      btn24h.addEventListener('click', () => {
+        APP_STATE.forecastMode = '24h';
+        btn24h.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#1B365D] text-white shadow-sm transition';
+        btn7d.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#4A5D75] hover:text-[#10233E] transition';
+        renderForecastSection();
+      });
+      btn7d.addEventListener('click', () => {
+        APP_STATE.forecastMode = '7d';
+        btn7d.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#1B365D] text-white shadow-sm transition';
+        btn24h.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#4A5D75] hover:text-[#10233E] transition';
+        renderForecastSection();
+      });
+
+      // Add City to Comparison Table
+      document.getElementById('addCompareCityBtn').addEventListener('click', () => {
+        const val = document.getElementById('compareCitySelect').value;
+        const [name, latStr, lonStr] = val.split('|');
+        ensureCityInComparison({ name, lat: parseFloat(latStr), lon: parseFloat(lonStr), country: '' });
+        renderComparisonTable();
+        showToast(`Added ${name} to comparison table.`);
+      });
+
+      // Chatbot Form & Quick Prompts
+      document.getElementById('chatForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('chatInput');
+        const q = input.value.trim();
+        if (!q) return;
+        input.value = '';
+        handleAssistantQuery(q);
+      });
+
+      document.querySelectorAll('.quick-prompt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          handleAssistantQuery(btn.textContent.trim());
+        });
+      });
+
       // Free AI Provider & Model Drawer Controls
       const providerSelect = document.getElementById('aiProviderSelect');
       const modelSelect = document.getElementById('aiModelSelect');
