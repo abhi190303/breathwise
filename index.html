@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BreatheWise AI — Understand Your Air. Protect Your Health.</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for Interactive Forecast & Comparison Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            beige: {
+              50: '#FCFBF7',
+              100: '#F9F6EF',
+              200: '#F5F1E8',
+              300: '#EDE6D6',
+              400: '#DFD7C8',
+              500: '#C9BFA9',
+            },
+            royal: {
+              50: '#EBF3FA',
+              100: '#DBEAFE',
+              500: '#0284C7',
+              600: '#2563EB',
+              800: '#1B365D',
+              900: '#10233E',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background: linear-gradient(180deg, #F5F1E8 0%, #EDE6D6 100%);
+      color: #10233E;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Custom Scrollbar in Beige & Blue */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #EDE6D6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C9BFA9;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2563EB;
+    }
+
+    /* Elevated Warm Ivory & Stone Card Depth */
+    .glass-card {
+      background: linear-gradient(160deg, rgba(252, 251, 247, 0.96), rgba(249, 246, 239, 0.98));
+      backdrop-filter: blur(12px);
+      border: 1px solid #DFD7C8;
+      box-shadow: 0 10px 28px -10px rgba(27, 54, 93, 0.08), 0 2px 6px -2px rgba(27, 54, 93, 0.04);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(37, 99, 235, 0.35);
+      box-shadow: 0 14px 32px -10px rgba(27, 54, 93, 0.12);
+    }
+
+    /* Gauge Circle Transition */
+    .gauge-ring {
+      transition: stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.6s ease;
+    }
+
+    /* Pulse indicator */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.85); opacity: 0.9; }
+      70% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .live-pulse::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: currentColor;
+      animation: pulse-ring 2s infinite;
+    }
+
+    /* Chat message animation */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-msg {
+      animation: fadeSlideUp 0.25s ease forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-500/20 selection:text-[#10233E]">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-[#FCFBF7]/92 backdrop-blur-md border-b border-[#DFD7C8] shadow-sm shadow-[#1B365D]/5">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1B365D] to-[#2563EB] flex items-center justify-center shadow-md shadow-[#1B365D]/20">
+          <i data-lucide="wind" class="w-6 h-6 text-white stroke-[2.4]"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-[#10233E]">BreatheWise <span class="text-[#2563EB]">AI</span></h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/25">
+              Hack2Skill v2.4
+            </span>
+          </div>
+          <p class="text-xs text-[#4A5D75]">Understand Your Air. Protect Your Health.</p>
+        </div>
+      </div>
+
+      <!-- Location Search & GPS Bar -->
+      <div class="flex-1 max-w-md w-full order-3 md:order-2 relative">
+        <div class="relative flex items-center">
+          <i data-lucide="search" class="w-4 h-4 text-[#4A5D75] absolute left-3.5 pointer-events-none"></i>
+          <input
+            id="citySearchInput"
+            type="text"
+            placeholder="Search any city (e.g., Bengaluru, Delhi, Tokyo, London)..."
+            autocomplete="off"
+            class="w-full bg-[#F9F6EF] border border-[#DFD7C8] hover:border-[#2563EB]/40 focus:bg-[#FCFBF7] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/15 rounded-xl pl-10 pr-24 py-2 text-sm text-[#10233E] placeholder-[#4A5D75]/75 outline-none transition"
+          />
+          <button
+            id="gpsBtn"
+            title="Use My Current GPS Location"
+            class="absolute right-1.5 px-2.5 py-1.5 rounded-lg bg-[#EBF3FA] hover:bg-[#DBEAFE] text-[#1B365D] border border-[#2563EB]/25 text-xs font-semibold flex items-center gap-1 transition"
+          >
+            <i data-lucide="navigation" class="w-3.5 h-3.5 text-[#2563EB]"></i>
+            <span>GPS</span>
+          </button>
+        </div>
+        <!-- Search Dropdown Results -->
+        <div id="searchDropdown" class="hidden absolute left-0 right-0 mt-1.5 bg-[#FCFBF7] border border-[#DFD7C8] rounded-xl shadow-xl shadow-[#1B365D]/10 overflow-hidden z-50 max-h-64 overflow-y-auto"></div>
+      </div>
+
+      <!-- Right Actions: Data Badge, Alerts, Architecture Docs -->
+      <div class="flex items-center gap-2 order-2 md:order-3">
+        <!-- Data Source Integrity Badge -->
+        <div id="dataSourceBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25 text-[#1B365D] text-xs font-semibold">
+          <span class="relative flex h-2 w-2 text-[#2563EB] live-pulse">
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#2563EB]"></span>
+          </span>
+          <span id="dataSourceText">LIVE API DATA</span>
+        </div>
+
+        <!-- Alert Threshold Button -->
+        <button id="openAlertModalBtn" class="relative p-2.5 rounded-xl bg-[#F9F6EF] hover:bg-[#EBF3FA] border border-[#DFD7C8] text-[#1B365D] transition" title="Smart Pollution Alert Settings">
+          <i data-lucide="bell-ring" class="w-4 h-4 text-[#2563EB]"></i>
+          <span id="alertActiveDot" class="hidden absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-600"></span>
+        </button>
+
+        <!-- Architecture & Hack2Skill Docs Button -->
+        <button id="openDocsBtn" class="px-3 py-2 rounded-xl bg-[#1B365D] hover:bg-[#10233E] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+          <i data-lucide="layers" class="w-4 h-4 text-[#93C5FD]"></i>
+          <span class="hidden sm:inline">Architecture & Setup</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- SMART POLLUTION ALERT BANNER (Dynamic) -->
+  <div id="smartAlertBanner" class="hidden bg-gradient-to-r from-red-50 via-amber-50 to-red-50 border-b border-red-300 px-4 py-2.5">
+    <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+      <div class="flex items-center gap-2.5 text-red-900">
+        <span class="p-1.5 rounded-lg bg-red-100 text-red-700 border border-red-200">
+          <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+        </span>
+        <span id="smartAlertMessage" class="font-semibold">Air Quality Alert: AQI has exceeded your configured threshold.</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="adjustThresholdFromBanner" class="px-2.5 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition">
+          Configure Threshold
+        </button>
+        <button id="dismissAlertBanner" class="p-1 text-red-700 hover:text-red-950">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION AREA -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- USER HEALTH PROFILE SELECTOR BAR -->
+    <section class="glass-card rounded-2xl p-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div class="flex items-start sm:items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/20 text-[#2563EB] shrink-0">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-sm font-bold text-[#10233E]">Personalized Health & Sensitivity Profile</h2>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/20">Dynamic Guidance</span>
+            </div>
+            <p class="text-xs text-[#4A5D75] mt-0.5">Select your profile to tailor AI reasoning, daily action windows, mask specs, and exposure thresholds.</p>
+          </div>
+        </div>
+
+        <!-- Profile Pills -->
+        <div id="profileSelector" class="flex flex-wrap gap-2">
+          <button data-profile="general" class="profile-btn active px-3 py-2 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 bg-[#1B365D] border-[#1B365D] text-white shadow-sm">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i> General Adult
+          </button>
+          <button data-profile="child" class="profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35">
+            <i data-lucide="baby" class="w-3.5 h-3.5 text-[#2563EB]"></i> Child
+          </button>
+          <button data-profile="senior" class="profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35">
+            <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-[#2563EB]"></i> Senior Citizen
+          </button>
+          <button data-profile="respiratory" class="profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35">
+            <i data-lucide="stethoscope" class="w-3.5 h-3.5 text-[#2563EB]"></i> Respiratory Sensitivity
+          </button>
+          <button data-profile="worker" class="profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35">
+            <i data-lucide="hard-hat" class="w-3.5 h-3.5 text-[#2563EB]"></i> Outdoor Worker
+          </button>
+          <button data-profile="fitness" class="profile-btn px-3 py-2 rounded-xl text-xs font-medium border transition flex items-center gap-1.5 bg-[#F5F1E8] border-[#DFD7C8] text-[#10233E] hover:bg-[#EBF3FA] hover:border-[#2563EB]/35">
+            <i data-lucide="activity" class="w-3.5 h-3.5 text-[#2563EB]"></i> Fitness Enthusiast
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROW 1: LIVE AIR QUALITY DASHBOARD + AI ASSISTANT CHATBOT -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+      <!-- LEFT COLUMN (7 cols): LIVE AQI GAUGE, TELEMETRY & 6 POLLUTANTS -->
+      <div class="xl:col-span-7 space-y-6">
+        <!-- Main AQI Hero Card -->
+        <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden">
+          <!-- Subtle ambient glow based on AQI color -->
+          <div id="aqiAmbientGlow" class="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none transition-colors duration-700"></div>
+
+          <!-- Location Header & Metadata -->
+          <div class="flex flex-wrap items-start justify-between gap-3 pb-5 border-b border-[#DFD7C8]">
+            <div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-[#2563EB]"></i>
+                <h2 id="locationName" class="text-xl sm:text-2xl font-bold text-[#10233E]">Bengaluru, India</h2>
+                <span id="locationCoords" class="hidden sm:inline text-xs font-mono text-[#1B365D] bg-[#EBF3FA] border border-[#2563EB]/20 px-2 py-0.5 rounded-md">12.97°N, 77.59°E</span>
+              </div>
+              <p class="text-xs text-[#4A5D75] mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span>Source: <strong class="text-[#10233E] font-semibold">Open-Meteo Air Quality & Weather API</strong></span>
+                <span>•</span>
+                <span>Last Updated: <strong id="lastUpdatedTime" class="text-[#2563EB] font-mono">--:--</strong></span>
+              </p>
+            </div>
+
+            <!-- Quick Preset Cities -->
+            <div class="flex items-center gap-1.5">
+              <button onclick="selectPresetCity('Bengaluru', 12.9716, 77.5946, 'India')" class="px-2.5 py-1 rounded-lg bg-[#F5F1E8] hover:bg-[#EBF3FA] text-xs font-medium text-[#1B365D] border border-[#DFD7C8] hover:border-[#2563EB]/35 transition">Bengaluru</button>
+              <button onclick="selectPresetCity('New Delhi', 28.6139, 77.2090, 'India')" class="px-2.5 py-1 rounded-lg bg-[#F5F1E8] hover:bg-[#EBF3FA] text-xs font-medium text-[#1B365D] border border-[#DFD7C8] hover:border-[#2563EB]/35 transition">Delhi</button>
+              <button onclick="selectPresetCity('Mumbai', 19.0760, 72.8777, 'India')" class="px-2.5 py-1 rounded-lg bg-[#F5F1E8] hover:bg-[#EBF3FA] text-xs font-medium text-[#1B365D] border border-[#DFD7C8] hover:border-[#2563EB]/35 transition">Mumbai</button>
+              <button onclick="selectPresetCity('London', 51.5074, -0.1278, 'United Kingdom')" class="px-2.5 py-1 rounded-lg bg-[#F5F1E8] hover:bg-[#EBF3FA] text-xs font-medium text-[#1B365D] border border-[#DFD7C8] hover:border-[#2563EB]/35 transition">London</button>
+            </div>
+          </div>
+
+          <!-- Center AQI Gauge + Health Implication + Weather -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-5">
+            <!-- Animated SVG Circular Gauge -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center relative">
+              <div class="relative w-48 h-48 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="68" stroke="#E5DEC9" stroke-width="12" fill="transparent" />
+                  <circle
+                    id="aqiGaugeCircle"
+                    cx="80"
+                    cy="80"
+                    r="68"
+                    stroke="#0284C7"
+                    stroke-width="12"
+                    stroke-linecap="round"
+                    fill="transparent"
+                    stroke-dasharray="427.25"
+                    stroke-dashoffset="427.25"
+                    class="gauge-ring"
+                  />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span class="text-[11px] font-bold uppercase tracking-widest text-[#4A5D75]">US AQI</span>
+                  <span id="aqiValueDisplay" class="text-5xl font-extrabold text-[#10233E] tracking-tight my-0.5">--</span>
+                  <span id="aqiCategoryBadge" class="px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    Loading...
+                  </span>
+                </div>
+              </div>
+              <p class="text-[11px] text-[#4A5D75] mt-1 text-center">Scale: 0–50 Good • 51–100 Mod • 101–150 Poor • 151–200 V.Poor • 201+ Severe</p>
+            </div>
+
+            <!-- Right Summary & Weather Telemetry -->
+            <div class="md:col-span-7 space-y-4">
+              <div class="p-4 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8]">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-xs font-bold uppercase tracking-wider text-[#1B365D] flex items-center gap-1.5">
+                    <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-[#2563EB]"></i> Health & Exposure Implication
+                  </span>
+                  <span id="dominantPollutantTag" class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/20">Primary: PM2.5</span>
+                </div>
+                <p id="healthImplicationText" class="text-sm text-[#10233E] leading-relaxed">
+                  Fetching live atmospheric telemetry and particulate concentrations...
+                </p>
+              </div>
+
+              <!-- Weather Telemetry Row -->
+              <div class="grid grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] flex items-center gap-3">
+                  <div class="p-2 rounded-lg bg-[#EBF3FA] text-[#0284C7] border border-[#2563EB]/15">
+                    <i data-lucide="thermometer" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] font-medium text-[#4A5D75]">Temp</p>
+                    <p id="weatherTemp" class="text-base font-bold text-[#10233E] font-mono">--°C</p>
+                  </div>
+                </div>
+                <div class="p-3 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] flex items-center gap-3">
+                  <div class="p-2 rounded-lg bg-[#EBF3FA] text-[#2563EB] border border-[#2563EB]/15">
+                    <i data-lucide="droplets" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] font-medium text-[#4A5D75]">Humidity</p>
+                    <p id="weatherHumidity" class="text-base font-bold text-[#10233E] font-mono">--%</p>
+                  </div>
+                </div>
+                <div class="p-3 rounded-xl bg-[#F5F1E8]/85 border border-[#DFD7C8] flex items-center gap-3">
+                  <div class="p-2 rounded-lg bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/15">
+                    <i data-lucide="wind" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <p class="text-[11px] font-medium text-[#4A5D75]">Wind</p>
+                    <p id="weatherWind" class="text-base font-bold text-[#10233E] font-mono">-- km/h</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 Core Pollutants Grid -->
+          <div class="mt-6 pt-5 border-t border-[#DFD7C8]">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-[#1B365D]">Atmospheric Pollutant Concentrations (µg/m³)</h3>
+              <span class="text-[11px] text-[#4A5D75]">Bars show % of WHO 24-hr / 8-hr reference guideline</span>
+            </div>
+            <div id="pollutantsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+            <button id="toggleFreeAiKeyBtn" title="Configure Free AI API Provider (Groq / Gemini)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-white font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="key-round" class="w-3.5 h-3.5 text-[#93C5FD]"></i>
+              <span>Free AI Key</span>
+            </button>
+          </div>
+
+          <!-- Optional Free AI Provider Configuration Drawer (Session Storage Only) -->
+          <div id="freeAiKeyDrawer" class="hidden p-3.5 bg-[#EBF3FA] border-b border-[#DFD7C8] space-y-2.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-[#1B365D]">100% Free AI Model Setup (No Credit Card Required)</span>
+              <button id="closeFreeAiDrawer" class="text-[#4A5D75] hover:text-[#10233E]"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+            </div>
+            <p class="text-[11px] text-[#4A5D75] leading-relaxed">
+              Select a free tier provider below or leave blank to use our built-in zero-setup reasoning engine. Keys stay strictly in browser <code class="text-[#1B365D] font-semibold">sessionStorage</code>.
+            </p>
+
+            <!-- Provider & Model Selectors -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label for="aiProviderSelect" class="block text-[10px] font-bold uppercase tracking-wider text-[#1B365D] mb-1">AI Provider</label>
+                <select id="aiProviderSelect" class="w-full bg-[#FCFBF7] border border-[#DFD7C8] rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#10233E] outline-none focus:border-[#2563EB]">
+                  <option value="groq">GroqCloud Free (console.groq.com)</option>
+                  <option value="gemini">Google Gemini Free (aistudio.google.com)</option>
+                  <option value="local">Built-in Reasoning Engine (Offline / 0-Key)</option>
+                </select>
+              </div>
+              <div>
+                <label for="aiModelSelect" class="block text-[10px] font-bold uppercase tracking-wider text-[#1B365D] mb-1">Free Model</label>
+                <select id="aiModelSelect" class="w-full bg-[#FCFBF7] border border-[#DFD7C8] rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#10233E] outline-none focus:border-[#2563EB]">
+                  <!-- Populated dynamically based on provider -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Session API Key Input -->
+            <div id="apiKeyInputRow" class="flex gap-2">
+              <input id="freeAiApiKeyInput" type="password" placeholder="Paste free Groq key (gsk_...)..." class="flex-1 bg-[#FCFBF7] border border-[#DFD7C8] rounded-lg px-3 py-1.5 text-xs text-[#10233E] outline-none focus:border-[#2563EB]" />
+              <button id="saveFreeAiKeyBtn" class="px-3 py-1.5 rounded-lg bg-[#2563EB] hover:bg-[#1B365D] text-white font-semibold text-xs transition shrink-0">Apply Model</button>
+            </div>
+          </div>
+
+          <!-- Chat Message Stream -->
+          <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3.5 scroll-smooth bg-[#F9F6EF]/60">
+            <!-- Initial Welcome Message injected by JS -->
+          </div>
+
+          <!-- Quick Prompt Chips -->
+          <div class="px-4 py-2.5 bg-[#F5F1E8] border-t border-[#DFD7C8]">
+            <p class="text-[10px] uppercase tracking-wider text-[#4A5D75] font-bold mb-1.5">Ask BreatheWise AI:</p>
+            <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Is it safe to go running today?
+              </button>
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Should I wear a mask outside?
+              </button>
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Can children play outdoors today?
+              </button>
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Is it safe to open my windows?
+              </button>
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Which time is best for outdoor exercise?
+              </button>
+              <button class="quick-prompt shrink-0 px-2.5 py-1 rounded-lg bg-[#FCFBF7] hover:bg-[#EBF3FA] border border-[#DFD7C8] hover:border-[#2563EB]/40 text-xs font-medium text-[#1B365D] transition">
+                Why is the air quality poor in my area?
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Input Form -->
+          <form id="chatForm" class="p-3 bg-[#FCFBF7] border-t border-[#DFD7C8] flex items-center gap-2">
+            <input
+              id="chatInput"
+              type="text"
+              placeholder="Ask about exercise safety, masks, windows, or pollution causes..."
+              class="flex-1 bg-[#F5F1E8] border border-[#DFD7C8] focus:bg-[#FCFBF7] focus:border-[#2563EB] rounded-xl px-3.5 py-2.5 text-sm text-[#10233E] placeholder-[#4A5D75]/75 outline-none transition"
+            />
+            <button type="submit" class="p-2.5 rounded-xl bg-gradient-to-r from-[#1B365D] to-[#2563EB] hover:opacity-95 text-white font-semibold shadow-md shadow-[#1B365D]/15 transition">
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: PERSONALIZED HEALTH RECOMMENDATIONS & SMART DAILY ACTION PLAN -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Personalized Health & Activity Matrix (7 cols) -->
+      <section class="lg:col-span-7 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#DFD7C8]">
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-[#10233E] flex items-center gap-2">
+                <i data-lucide="heart-pulse" class="w-5 h-5 text-[#2563EB]"></i>
+                Personalized Health & Activity Protocol
+              </h3>
+              <p class="text-xs text-[#4A5D75] mt-0.5">Tailored for <span id="activeProfileLabel" class="text-[#1B365D] font-bold">General Adult</span> at current AQI levels</p>
+            </div>
+            <span id="profileRiskBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              Low Exposure Risk
+            </span>
+          </div>
+
+          <!-- 6 Guidance Cards -->
+          <div id="healthGuidanceGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Mandatory Medical Disclaimer -->
+        <div class="mt-4 pt-3 border-t border-[#DFD7C8] flex items-start gap-2 text-[11px] text-[#4A5D75]">
+          <i data-lucide="info" class="w-4 h-4 text-[#2563EB] shrink-0 mt-0.5"></i>
+          <p>
+            <strong class="text-[#10233E]">Non-Medical Advisory:</strong> BreatheWise AI provides environmental exposure guidance based on atmospheric telemetry and public health guidelines. It does not diagnose medical conditions or replace professional medical advice.
+          </p>
+        </div>
+      </section>
+
+      <!-- Smart Daily Action Plan (5 cols) -->
+      <section class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-6 flex flex-col">
+        <div class="flex items-center justify-between pb-4 border-b border-[#DFD7C8]">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-[#10233E] flex items-center gap-2">
+              <i data-lucide="calendar-clock" class="w-5 h-5 text-[#2563EB]"></i>
+              Smart Daily Action Plan
+            </h3>
+            <p class="text-xs text-[#4A5D75] mt-0.5">Adaptive schedule synthesized from hourly AQI curve</p>
+          </div>
+          <span class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-lg bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/25">
+            FORECAST-DRIVEN
+          </span>
+        </div>
+
+        <div id="dailyActionPlanContainer" class="flex-1 flex flex-col justify-between gap-3.5 mt-4">
+          <!-- Morning, Afternoon, Evening cards populated via JS -->
+        </div>
+      </section>
+    </div>
+
+    <!-- ROW 3: INTERACTIVE AIR QUALITY FORECAST (24-HOUR & 7-DAY) -->
+    <section class="glass-card rounded-2xl p-5 sm:p-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#DFD7C8]">
+        <div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <h3 class="text-base sm:text-lg font-bold text-[#10233E] flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-5 h-5 text-[#2563EB]"></i>
+              Predictive Air Quality Forecast
+            </h3>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#EBF3FA] text-[#1B365D] border border-[#2563EB]/25">
+              FORECAST DATA (MODEL ESTIMATE)
+            </span>
+          </div>
+          <p class="text-xs text-[#4A5D75] mt-1">Identify upcoming pollution peaks and optimal low-exposure outdoor windows.</p>
+        </div>
+
+        <!-- Toggle 24H vs 7D -->
+        <div class="flex items-center gap-1.5 bg-[#F5F1E8] p-1 rounded-xl border border-[#DFD7C8] self-start">
+          <button id="btnForecast24h" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#1B365D] text-white shadow-sm transition">
+            24-Hour Hourly
+          </button>
+          <button id="btnForecast7d" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#4A5D75] hover:text-[#10233E] transition">
+            7-Day Trend
+          </button>
+        </div>
+      </div>
+
+      <!-- Forecast Insights Strip: Best Window vs Peak Pollution -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+        <div class="p-3.5 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25 flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-white text-[#2563EB] shadow-sm">
+            <i data-lucide="sun" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-[#1B365D] uppercase tracking-wider">Optimal Clean Air Window</p>
+            <p id="bestWindowText" class="text-sm font-medium text-[#10233E] mt-0.5">Calculating lowest AQI window...</p>
+          </div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-[#F5F1E8] border border-[#DFD7C8] flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-amber-100 text-amber-800 border border-amber-200">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-amber-900 uppercase tracking-wider">Expected Pollution Peak</p>
+            <p id="peakWindowText" class="text-sm font-medium text-[#10233E] mt-0.5">Calculating peak concentration window...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Responsive Chart Canvas Container -->
+      <div class="relative w-full h-72 sm:h-80 mt-2">
+        <canvas id="forecastChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ROW 4: MULTI-CITY COMPARISON & POLLUTION SOURCE INSIGHTS -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+      <!-- City Comparison Module (7 cols) -->
+      <section class="xl:col-span-7 glass-card rounded-2xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#DFD7C8]">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-[#10233E] flex items-center gap-2">
+              <i data-lucide="globe" class="w-5 h-5 text-[#2563EB]"></i>
+              Urban Air Quality Comparison
+            </h3>
+            <p class="text-xs text-[#4A5D75] mt-0.5">Compare active city against major regional & global hubs</p>
+          </div>
+
+          <!-- Add City to Compare -->
+          <div class="flex items-center gap-2">
+            <select id="compareCitySelect" class="bg-[#F5F1E8] border border-[#DFD7C8] rounded-xl px-3 py-1.5 text-xs font-medium text-[#10233E] outline-none focus:border-[#2563EB]">
+              <option value="New Delhi|28.6139|77.2090">New Delhi, India</option>
+              <option value="Mumbai|19.0760|72.8777">Mumbai, India</option>
+              <option value="Chennai|13.0827|80.2707">Chennai, India</option>
+              <option value="Hyderabad|17.3850|78.4867">Hyderabad, India</option>
+              <option value="Kolkata|22.5726|88.3639">Kolkata, India</option>
+              <option value="London|51.5074|-0.1278">London, UK</option>
+              <option value="Tokyo|35.6762|139.6503">Tokyo, Japan</option>
+              <option value="New York|40.7128|-74.0060">New York, USA</option>
+            </select>
+            <button id="addCompareCityBtn" class="px-3 py-1.5 rounded-xl bg-[#2563EB] hover:bg-[#1B365D] text-white font-semibold text-xs transition flex items-center gap-1 shadow-sm">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+            </button>
+          </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[#DFD7C8] bg-[#F5F1E8]/70 text-[11px] uppercase tracking-wider text-[#1B365D]">
+                <th class="py-2.5 px-3 rounded-tl-lg">City</th>
+                <th class="py-2.5 px-3">US AQI</th>
+                <th class="py-2.5 px-3">PM2.5</th>
+                <th class="py-2.5 px-3">PM10</th>
+                <th class="py-2.5 px-3">Severity</th>
+                <th class="py-2.5 px-3">Health Guidance</th>
+                <th class="py-2.5 px-2 text-right rounded-tr-lg">Action</th>
+              </tr>
+            </thead>
+            <tbody id="comparisonTableBody" class="divide-y divide-[#DFD7C8]/70 text-xs sm:text-sm">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Pollution Intelligence & Exposure Reduction (5 cols) -->
+      <section class="xl:col-span-5 glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="pb-4 border-b border-[#DFD7C8]">
+            <h3 class="text-base sm:text-lg font-bold text-[#10233E] flex items-center gap-2">
+              <i data-lucide="microscope" class="w-5 h-5 text-[#2563EB]"></i>
+              Pollution Insights & Source Attribution
+            </h3>
+            <p class="text-xs text-[#4A5D75] mt-0.5">Diagnostic breakdown of dominant pollutants & dispersion factors</p>
+          </div>
+
+          <div id="pollutionInsightsContent" class="space-y-3.5 mt-4">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-[#DFD7C8] text-[11px] text-[#4A5D75]">
+          <em>Note: Potential urban contributors are inferred from chemical pollutant ratios (e.g., NO₂/PM₂.₅ traffic signature vs. coarse PM₁₀ dust) and meteorological wind dispersion, rather than direct smokestack sensors.</em>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#DFD7C8] bg-[#FCFBF7] py-6 px-4 sm:px-6 lg:px-8 mt-10">
+    <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#4A5D75]">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-[#10233E]">BreatheWise AI</span>
+        <span>•</span>
+        <span>Understand Your Air. Protect Your Health.</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <span>Data Attribution: <a href="https://open-meteo.com/" target="_blank" rel="noopener" class="text-[#2563EB] font-medium hover:underline">Open-Meteo Air Quality & Weather APIs</a></span>
+        <span>•</span>
+        <span>Hack2Skill Challenge 6 — Urban Air Quality Assistant</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: SMART POLLUTION ALERT THRESHOLD CONFIGURATOR -->
+  <div id="alertModal" class="hidden fixed inset-0 z-50 bg-[#10233E]/45 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-6 space-y-5 border-[#DFD7C8]">
+      <div class="flex items-center justify-between border-b border-[#DFD7C8] pb-3">
+        <h3 class="text-lg font-bold text-[#10233E] flex items-center gap-2">
+          <i data-lucide="bell-ring" class="w-5 h-5 text-[#2563EB]"></i>
+          Smart Pollution Alert Settings
+        </h3>
+        <button id="closeAlertModal" class="text-[#4A5D75] hover:text-[#10233E]"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div class="space-y-4">
+        <p class="text-xs text-[#4A5D75] leading-relaxed">
+          Receive proactive alerts when live AQI or upcoming 24-hour forecast peaks exceed your custom safety threshold, or when sudden air quality deterioration occurs.
+        </p>
+
+        <div class="p-4 rounded-xl bg-[#F5F1E8] border border-[#DFD7C8] space-y-3">
+          <div class="flex items-center justify-between">
+            <label for="thresholdSlider" class="text-xs font-bold uppercase tracking-wider text-[#1B365D]">AQI Alert Threshold</label>
+            <span id="thresholdValueDisplay" class="text-lg font-extrabold font-mono text-[#2563EB]">100</span>
+          </div>
+          <input id="thresholdSlider" type="range" min="30" max="300" step="5" value="100" class="w-full accent-[#2563EB] cursor-pointer" />
+          <div class="flex justify-between text-[10px] text-[#4A5D75] font-mono">
+            <span>30 (Strict)</span>
+            <span>100 (Moderate)</span>
+            <span>150 (Poor)</span>
+            <span>300 (Severe)</span>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-3 p-3 rounded-xl bg-[#EBF3FA]/75 border border-[#2563EB]/20 cursor-pointer">
+          <input id="forecastSpikeCheck" type="checkbox" checked class="w-4 h-4 accent-[#2563EB] rounded" />
+          <span class="text-xs font-medium text-[#10233E]">Warn me if 24-hour forecast predicts a sudden +40 AQI spike</span>
+        </label>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="saveAlertSettingsBtn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#1B365D] to-[#2563EB] text-white font-semibold text-xs shadow-md transition">
+          Save Alert Rules
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ARCHITECTURE & HACK2SKILL EVALUATION DOCUMENTATION -->
+  <div id="docsModal" class="hidden fixed inset-0 z-50 bg-[#10233E]/45 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col border-[#DFD7C8] overflow-hidden">
+      <div class="p-5 bg-[#1B365D] text-white border-b border-[#10233E] flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="cpu" class="w-5 h-5 text-[#93C5FD]"></i>
+          <h3 class="text-lg font-bold text-white">BreatheWise AI — System Architecture & Production Setup</h3>
+        </div>
+        <button id="closeDocsModal" class="text-[#DBEAFE] hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-5 text-xs sm:text-sm text-[#10233E] leading-relaxed">
+        <div class="p-4 rounded-xl bg-[#EBF3FA] border border-[#2563EB]/25">
+          <h4 class="font-bold text-[#1B365D] mb-1">1. Architectural Overview & Grounded AI Design</h4>
+          <p class="text-xs text-[#10233E]">
+            BreatheWise AI solves the gap between raw environmental numbers and actionable personal health protection. It combines live Open-Meteo atmospheric telemetry (PM2.5, PM10, CO, NO2, SO2, O3, Temperature, Humidity, Wind Speed) with a user sensitivity profile engine and a dual-mode AI Reasoning Assistant.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-[#F5F1E8] border border-[#DFD7C8]">
+            <h4 class="font-bold text-[#1B365D] mb-1.5">2. Free AI Proxy Security (Express / Next.js)</h4>
+            <p class="text-xs text-[#4A5D75] mb-2">
+              In production, route <code class="text-[#2563EB] font-semibold">/api/assistant</code> through your server using free-tier environment variables (<code class="text-[#2563EB] font-semibold">GROQ_API_KEY</code> or <code class="text-[#2563EB] font-semibold">GEMINI_API_KEY</code>):
+            </p>
+            <pre class="bg-[#10233E] p-2.5 rounded-lg text-[11px] font-mono text-[#DBEAFE] overflow-x-auto">// POST /api/assistant (Groq Free Tier Proxy)
+const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "llama-3.3-70b-versatile",
+    messages: [{ role: "system", content: groundedPrompt }, { role: "user", content: question }]
+  })
+});</pre>
+          </div>
+
+          <div class="p-4 rounded-xl bg-[#F5F1E8] border border-[#DFD7C8]">
+            <h4 class="font-bold text-[#1B365D] mb-1.5">3. Resilience, Caching & Zero-Fabrication Policy</h4>
+            <ul class="text-xs text-[#4A5D75] space-y-1.5 list-disc pl-4">
+              <li><strong class="text-[#10233E]">Intelligent TTL Cache:</strong> City telemetry is cached in-memory for 10 minutes to respect Open-Meteo rate limits.</li>
+              <li><strong class="text-[#10233E]">Graceful Degradation:</strong> If offline or rate-limited (HTTP 429), the app automatically switches to calibrated baseline data or the deterministic reasoning engine.</li>
+              <li><strong class="text-[#10233E]">Anti-Hallucination Guardrails:</strong> Both free LLM prompts (Groq / Gemini) and the local reasoning engine cite exact µg/m³ readings and avoid medical diagnosis.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#F5F1E8] border border-[#DFD7C8]">
+          <h4 class="font-bold text-[#1B365D] mb-1.5">4. Quick Local & Cloud Deployment Setup (100% Free Tier)</h4>
+          <pre class="bg-[#10233E] p-3 rounded-lg text-[11px] font-mono text-[#93C5FD] overflow-x-auto"># 1. Clone repository & set free-tier API environment variables (optional)
+export GROQ_API_KEY="gsk_your_free_groq_key"
+export GEMINI_API_KEY="AIza_your_free_aistudio_key"
+
+# 2. Run zero-dependency frontend or attach Express/Next.js backend proxy
+npx serve . -p 3000</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    /**
+     * BreatheWise AI — Core Environmental Intelligence & State Engine
+     * Built for Hack2Skill Challenge 6 (Beige & Blue Refined Edition)
+     */
+
+    // =========================================================================
+    // 1. GLOBAL APPLICATION STATE & CONFIGURATION
+    // =========================================================================
+    const FREE_AI_PROVIDERS = {
+      groq: {
+        name: 'GroqCloud Free',
+        placeholder: 'Paste free Groq key (gsk_...) from console.groq.com...',
+        models: [
+          { id: 'llama-3.3-70b-versatile', badge: 'Groq Llama-3.3-70B Free', label: 'Llama 3.3 70B Versatile (Free • Ultra-Fast)' },
+          { id: 'llama-3.1-8b-instant', badge: 'Groq Llama-3.1-8B Free', label: 'Llama 3.1 8B Instant (Free • High RPD)' },
+          { id: 'qwen/qwen3-32b', badge: 'Groq Qwen3-32B Free', label: 'Qwen 3 32B (Free • Strong Reasoning)' }
+        ]
+      },
+      gemini: {
+        name: 'Google Gemini Free',
+        placeholder: 'Paste free Google AI Studio key (AIza...) from aistudio.google.com...',
+        models: [
+          { id: 'gemini-3.5-flash-lite', badge: 'Gemini 3.5 Flash-Lite Free', label: 'Gemini 3.5 Flash-Lite (Free • 500 RPD)' },
+          { id: 'gemini-3.8-flash', badge: 'Gemini 3.8 Flash Free', label: 'Gemini 3.8 Flash (Free Tier)' },
+          { id: 'gemini-3.6-flash', badge: 'Gemini 3.6 Flash Free', label: 'Gemini 3.6 Flash (Free Tier)' }
+        ]
+      },
+      local: {
+        name: 'Built-in Engine',
+        placeholder: 'No API key needed — runs 100% locally in your browser',
+        models: [
+          { id: 'deterministic-v2', badge: 'Grounded Reasoning Engine', label: 'Deterministic Environmental Engine (0-Setup)' }
+        ]
+      }
+    };
+
+    const APP_STATE = {
+      currentCity: {
+        name: 'Bengaluru',
+        country: 'India',
+        lat: 12.9716,
+        lon: 77.5946
+      },
+      profile: 'general', // general | child | senior | respiratory | worker | fitness
+      dataMode: 'LIVE',   // LIVE | DEMO
+      liveData: null,     // { aqi, pm25, pm10, co, no2, so2, o3, temp, humidity, wind, timestamp }
+      forecast24h: [],    // Array of { time, aqi, pm25 }
+      forecast7d: [],     // Array of { date, maxAqi, avgAqi, maxPm25 }
+      forecastMode: '24h',
+      alertThreshold: 100,
+      alertOnSpike: true,
+      aiProvider: sessionStorage.getItem('bw_ai_provider') || 'groq',
+      aiModel: sessionStorage.getItem('bw_ai_model') || 'llama-3.3-70b-versatile',
+      aiApiKey: sessionStorage.getItem('bw_ai_key') || '', // Stored strictly in sessionStorage
+      cache: new Map(),   // TTL Cache for API calls (10 mins)
+      comparisonCities: [
+        { name: 'Bengaluru', country: 'India', lat: 12.9716, lon: 77.5946 },
+        { name: 'New Delhi', country: 'India', lat: 28.6139, lon: 77.2090 },
+        { name: 'Mumbai', country: 'India', lat: 19.0760, lon: 72.8777 },
+        { name: 'London', country: 'United Kingdom', lat: 51.5074, lon: -0.1278 }
+      ],
+      chartInstance: null
+    };
+// ... existing code ... -->
+    async function handleAssistantQuery(userQuestion) {
+      if (!userQuestion.trim()) return;
+      appendChatMessage('user', userQuestion);
+
+      const live = APP_STATE.liveData;
+      const systemPrompt = `You are BreatheWise AI, an urban environmental health assistant. Answer concisely in clean HTML (<p>, <ul>, <li>, <strong>). Ground every statement strictly in this telemetry for ${APP_STATE.currentCity.name}: DataMode=${APP_STATE.dataMode}, US_AQI=${live.aqi}, PM2.5=${live.pm25}ug/m3, PM10=${live.pm10}ug/m3, NO2=${live.no2}ug/m3, O3=${live.o3}ug/m3, SO2=${live.so2}ug/m3, CO=${live.co}ug/m3, Temp=${live.temp}C, Humidity=${live.humidity}%, Wind=${live.wind}km/h, UserProfile=${USER_PROFILES[APP_STATE.profile].label}. Never fabricate readings, distinguish forecast from live data, and include a brief non-medical disclaimer.`;
+
+      // 1. GroqCloud Free Tier (OpenAI-compatible LPU endpoint)
+      if (APP_STATE.aiProvider === 'groq' && APP_STATE.aiApiKey) {
+        try {
+          const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${APP_STATE.aiApiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: APP_STATE.aiModel,
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userQuestion }
+              ],
+              temperature: 0.3,
+              max_tokens: 450
+            })
+          });
+
+          if (res.status === 429) {
+            showToast('Groq free tier rate limit reached; using local reasoning engine.');
+          } else if (!res.ok) {
+            throw new Error(`Groq HTTP ${res.status}`);
+          } else {
+            const data = await res.json();
+            const replyText = data.choices?.[0]?.message?.content;
+            if (replyText) {
+              const modelMeta = FREE_AI_PROVIDERS.groq.models.find(m => m.id === APP_STATE.aiModel);
+              appendChatMessage('ai', replyText, `${modelMeta ? modelMeta.badge : APP_STATE.aiModel} • Grounded`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Groq API call failed, falling back to deterministic engine:', err);
+          showToast('Groq API unavailable; using local grounded reasoning engine.');
+        }
+      }
+
+      // 2. Google AI Studio / Gemini Free Tier
+      if (APP_STATE.aiProvider === 'gemini' && APP_STATE.aiApiKey) {
+        try {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(APP_STATE.aiModel)}:generateContent?key=${encodeURIComponent(APP_STATE.aiApiKey)}`;
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: userQuestion }] }],
+              generationConfig: { temperature: 0.3, maxOutputTokens: 450 }
+            })
+          });
+
+          if (res.status === 429) {
+            showToast('Gemini free tier quota/rate limit reached; using local reasoning engine.');
+          } else if (!res.ok) {
+            throw new Error(`Gemini HTTP ${res.status}`);
+          } else {
+            const data = await res.json();
+            const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (replyText) {
+              const modelMeta = FREE_AI_PROVIDERS.gemini.models.find(m => m.id === APP_STATE.aiModel);
+              appendChatMessage('ai', replyText, `${modelMeta ? modelMeta.badge : APP_STATE.aiModel} • Grounded`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.warn('Gemini API call failed, falling back to deterministic engine:', err);
+          showToast('Gemini API unavailable; using local grounded reasoning engine.');
+        }
+      }
+
+      // 3. Built-in Deterministic Grounded Reasoning Engine (Always Available)
+      setTimeout(() => {
+        const responseHtml = generateGroundedRuleResponse(userQuestion);
+        appendChatMessage('ai', responseHtml);
+      }, 240);
+    }
+// ... existing code ... -->
+      // Free AI Provider & Model Drawer Controls
+      const providerSelect = document.getElementById('aiProviderSelect');
+      const modelSelect = document.getElementById('aiModelSelect');
+      const keyInput = document.getElementById('freeAiApiKeyInput');
+      const keyRow = document.getElementById('apiKeyInputRow');
+
+      function populateModelsForProvider(providerKey, selectedModelId = null) {
+        const provider = FREE_AI_PROVIDERS[providerKey] || FREE_AI_PROVIDERS.groq;
+        modelSelect.innerHTML = provider.models.map(m =>
+          `<option value="${m.id}">${m.label}</option>`
+        ).join('');
+        if (selectedModelId && provider.models.some(m => m.id === selectedModelId)) {
+          modelSelect.value = selectedModelId;
+        }
+        keyInput.placeholder = provider.placeholder;
+        keyRow.style.display = providerKey === 'local' ? 'none' : 'flex';
+      }
+
+      function updateActiveAiBadge() {
+        const badge = document.getElementById('aiEngineModeBadge');
+        if (APP_STATE.aiProvider === 'local' || !APP_STATE.aiApiKey) {
+          badge.textContent = 'Grounded Reasoning Engine';
+          return;
+        }
+        const provider = FREE_AI_PROVIDERS[APP_STATE.aiProvider];
+        const modelObj = provider?.models.find(m => m.id === APP_STATE.aiModel);
+        badge.textContent = modelObj ? modelObj.badge : 'Free AI Active';
+      }
+
+      providerSelect.value = APP_STATE.aiProvider;
+      populateModelsForProvider(APP_STATE.aiProvider, APP_STATE.aiModel);
+      keyInput.value = APP_STATE.aiApiKey;
+      updateActiveAiBadge();
+
+      providerSelect.addEventListener('change', (e) => {
+        populateModelsForProvider(e.target.value);
+      });
+
+      document.getElementById('toggleFreeAiKeyBtn').addEventListener('click', () => {
+        document.getElementById('freeAiKeyDrawer').classList.toggle('hidden');
+      });
+      document.getElementById('closeFreeAiDrawer').addEventListener('click', () => {
+        document.getElementById('freeAiKeyDrawer').classList.add('hidden');
+      });
+      document.getElementById('saveFreeAiKeyBtn').addEventListener('click', () => {
+        APP_STATE.aiProvider = providerSelect.value;
+        APP_STATE.aiModel = modelSelect.value;
+        APP_STATE.aiApiKey = keyInput.value.trim();
+
+        sessionStorage.setItem('bw_ai_provider', APP_STATE.aiProvider);
+        sessionStorage.setItem('bw_ai_model', APP_STATE.aiModel);
+        if (APP_STATE.aiApiKey) {
+          sessionStorage.setItem('bw_ai_key', APP_STATE.aiApiKey);
+        } else {
+          sessionStorage.removeItem('bw_ai_key');
+        }
+
+        document.getElementById('freeAiKeyDrawer').classList.add('hidden');
+        updateActiveAiBadge();
+
+        if (APP_STATE.aiProvider !== 'local' && APP_STATE.aiApiKey) {
+          showToast(`Enabled ${document.getElementById('aiEngineModeBadge').textContent} for this session.`);
+        } else {
+          showToast('Using built-in zero-setup grounded reasoning engine.');
+        }
+      });
+
+      // Alert Modal Controls
+      const alertModal = document.getElementById('alertModal');
+      const thresholdSlider = document.getElementById('thresholdSlider');
+      const thresholdDisplay = document.getElementById('thresholdValueDisplay');
+
+      document.getElementById('openAlertModalBtn').addEventListener('click', () => alertModal.classList.remove('hidden'));
+      document.getElementById('adjustThresholdFromBanner').addEventListener('click', () => alertModal.classList.remove('hidden'));
+      document.getElementById('closeAlertModal').addEventListener('click', () => alertModal.classList.add('hidden'));
+      document.getElementById('dismissAlertBanner').addEventListener('click', () => document.getElementById('smartAlertBanner').classList.add('hidden'));
+
+      thresholdSlider.addEventListener('input', (e) => {
+        thresholdDisplay.textContent = e.target.value;
+      });
+
+      document.getElementById('saveAlertSettingsBtn').addEventListener('click', () => {
+        APP_STATE.alertThreshold = parseInt(thresholdSlider.value, 10);
+        APP_STATE.alertOnSpike = document.getElementById('forecastSpikeCheck').checked;
+        alertModal.classList.add('hidden');
+        evaluateSmartAlerts();
+        showToast(`Alert threshold updated to AQI ${APP_STATE.alertThreshold}.`);
+      });
+
+      // Architecture Docs Modal Controls
+      const docsModal = document.getElementById('docsModal');
+      document.getElementById('openDocsBtn').addEventListener('click', () => docsModal.classList.remove('hidden'));
+      document.getElementById('closeDocsModal').addEventListener('click', () => docsModal.classList.add('hidden'));
+
+      // Initial Welcome Message in Chatbot
+      appendChatMessage(
+        'ai',
+        `<p>Hello! I am <strong>BreatheWise AI</strong>, your environmental health assistant.</p>
+         <p>I continuously analyze live atmospheric telemetry, weather dispersion, and your selected health profile to help you plan outdoor exercise, mask usage, and home ventilation. Ask me anything or tap a quick question below!</p>`,
+        'Ready • Context-Aware'
+      );
+
+      // Boot Default Demonstration City: Bengaluru, India
+      loadAndRenderCity(APP_STATE.currentCity);
+    });
+  </script>
+</body>
+</html>
